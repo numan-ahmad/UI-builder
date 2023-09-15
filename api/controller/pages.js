@@ -1,26 +1,15 @@
-const Product = require('../models/product');
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Page = require("../models/page");
 
-exports.create_page = (req, res, next) => {
-    Product.find().select('name price _id').exec().then((doc) => {
-        console.log(doc);
-        res.status(200).json({message: 'Successfully Created'});
-    }).catch((err) => {
-        res.status(500).json({
-            error: err
-        })
-    })
-}
-
-exports.delete_page = (req, res, next) => {
-    Page.remove({ _id: req.params.userId })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "page deleted"
-      })
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err })
-    })
+exports.create_page = async (req, res) => {
+  try {
+    const page = new Page({
+      title: req.body.title,
+      pageHtml: req.body.pageHtml,
+    });
+    await page.save();
+    return res.status(201).json({ message: "Page created" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
+};

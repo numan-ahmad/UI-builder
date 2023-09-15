@@ -6,8 +6,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const pagesRoutes = require('./api/routes/pages')
 
-mongoose.connect('mongodb://localhost:27017/ui-builder').then(() => {
-    console.log("connected to localhost")
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.MONGO_URI).then(() => {
+    console.log("DB connected")
 })
 
 app.use(morgan('dev'))
